@@ -1,5 +1,7 @@
 package br.ce.wcaquino.servicos;
 
+import static org.junit.Assert.assertEquals;
+
 /****
  * 
  * É uma boa prática a classe de teste 'LocacaoServiceTest' ser criada no 
@@ -34,9 +36,9 @@ public class LocacaoServiceTest {
 		Locacao locacao = locacaoService.alugarFilme(usuario, filme);
 		
 		//verificacao
-		assertTrue(locacao.getValor() == 5.0);
-		System.out.println(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		System.out.println(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+		assertEquals(5.0 ,locacao.getValor() , 0.1);
+		assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
+		assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 	}
 	
 }
