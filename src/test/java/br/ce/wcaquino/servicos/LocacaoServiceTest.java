@@ -6,10 +6,13 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
@@ -22,16 +25,47 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 	
+	private LocacaoService locacaoService = new LocacaoService();
+	
+	private static int contador = 0;
+	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
+	@Before
+	public void setUp(){
+		System.out.println("Before");
+		// cenario
+		locacaoService = new LocacaoService();
+		contador = contador + 1;
+		System.out.println(contador);
+	
+	}
+	
+	@After
+	public void tearDown() {
+		System.out.println("After");
+	}
+	
+	
+	@BeforeClass
+	public static void setUpClass(){
+		System.out.println("Before Class");
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+		System.out.println("After Class");
+	}
+	
+	
+	
+	
 	@Test
 	public void teste() throws Exception{
-		// cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("Pedro junior");
 		Filme filme = new Filme("Filme 1",2 , 5.0);
 		
@@ -43,7 +77,6 @@ public class LocacaoServiceTest {
 		error.checkThat(locacao.getValor() , not(6.0));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is((true)));
-
 	}
 	
 	/***
@@ -53,7 +86,6 @@ public class LocacaoServiceTest {
 	@Test(expected=FilmeSemEstoqueException.class)
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 		// cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("Pedro junior");
 		Filme filme = new Filme("Filme 1",0 , 5.0);
 				
@@ -65,7 +97,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testeLocacao_UsuarioVazio() throws FilmeSemEstoqueException{
 		// cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario =null;//new Usuario("Pedro junior");
 		Filme filme = new Filme("Filme 1",2 , 5.0);
 	
@@ -86,7 +117,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testeLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
 		// cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("Pedro junior");
 		Filme filme = null;//new Filme("Filme 1",2 , 5.0);
 		
@@ -97,9 +127,6 @@ public class LocacaoServiceTest {
 		
 		System.out.println("Forma nova");
 	}
-	
-	
-	
 	
 	
 	
