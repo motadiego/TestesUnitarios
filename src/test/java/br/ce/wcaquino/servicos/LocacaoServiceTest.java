@@ -4,7 +4,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -67,10 +70,10 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste() throws Exception{
 		Usuario usuario = new Usuario("Pedro junior");
-		Filme filme = new Filme("Filme 1",2 , 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1",2 , 5.0));
 		
 		// acao
-		Locacao locacao = locacaoService.alugarFilme(usuario, filme);
+		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
 		
 			//verificacao
 		error.checkThat(locacao.getValor() , is(5.0));
@@ -87,22 +90,23 @@ public class LocacaoServiceTest {
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 		// cenario
 		Usuario usuario = new Usuario("Pedro junior");
-		Filme filme = new Filme("Filme 1",0 , 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1",0,5.0));
 				
 		// acao
-		locacaoService.alugarFilme(usuario, filme);
+		locacaoService.alugarFilme(usuario, filmes);
 	}
 	
 	
 	@Test
 	public void testeLocacao_UsuarioVazio() throws FilmeSemEstoqueException{
+		
 		// cenario
 		Usuario usuario =null;//new Usuario("Pedro junior");
-		Filme filme = new Filme("Filme 1",2 , 5.0);
-	
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1",2 , 5.0));
+		
 		// acao
 		try {
-			locacaoService.alugarFilme(usuario, filme);
+			locacaoService.alugarFilme(usuario, filmes);
 			Assert.fail("Deveria ter lancado uma exceção");
 		}catch (LocadoraException e) {
 			assertThat(e.getMessage(), is("Usuario vazio"));
@@ -118,12 +122,11 @@ public class LocacaoServiceTest {
 	public void testeLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
 		// cenario
 		Usuario usuario = new Usuario("Pedro junior");
-		Filme filme = null;//new Filme("Filme 1",2 , 5.0);
 		
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filme vazio");
 
-		locacaoService.alugarFilme(usuario, filme);
+		locacaoService.alugarFilme(usuario, null);
 		
 		System.out.println("Forma nova");
 	}
