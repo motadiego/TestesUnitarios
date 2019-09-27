@@ -15,4 +15,12 @@ public class MatchersProprios {
 	}
 	
 	
+	public static DataDiferencaDiasMatcher ehHojeComDiferencaDias(Integer diaSemana) {
+		return new DataDiferencaDiasMatcher(diaSemana);
+	}
+	
+	public static DataDiferencaDiasMatcher ehHoje() {
+		return new DataDiferencaDiasMatcher(0);
+	}
+	
 }
