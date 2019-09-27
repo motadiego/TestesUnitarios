@@ -25,6 +25,7 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exception.FilmeSemEstoqueException;
 import br.ce.wcaquino.exception.LocadoraException;
+import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
@@ -141,11 +142,12 @@ public class LocacaoServiceTest {
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1",2, 4.0));
 		
 		// acao
-		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
+		Locacao retorno = locacaoService.alugarFilme(usuario, filmes);
 		
 		//verificacao
-		boolean ehSegunda = DataUtils.verificarDiaSemana(locacao.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(ehSegunda);
+		assertThat(retorno.getDataRetorno(), MatchersProprios.caiEm(Calendar.SUNDAY));
+		assertThat(retorno.getDataRetorno(), MatchersProprios.caiNumaSegunda());
+
 	}
 	
 	
