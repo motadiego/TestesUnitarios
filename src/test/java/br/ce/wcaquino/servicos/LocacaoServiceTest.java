@@ -42,7 +42,6 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setUp(){
-		System.out.println("Before");
 		// cenario
 		locacaoService = new LocacaoService();
 		contador = contador + 1;
@@ -50,9 +49,14 @@ public class LocacaoServiceTest {
 	
 	}
 	
+	@Before
+	public void before() {
+		System.out.println("Antes de cada teste");
+	}
+	
 	@After
 	public void tearDown() {
-		System.out.println("After");
+		System.out.println("Depos de cada teste");
 	}
 	
 	
@@ -118,7 +122,7 @@ public class LocacaoServiceTest {
 			assertThat(e.getMessage(), is("Usuario vazio"));
 		}
 		
-		System.out.println("Forma Robusta");
+		//System.out.println("Forma Robusta");
 	}
 	
 	
