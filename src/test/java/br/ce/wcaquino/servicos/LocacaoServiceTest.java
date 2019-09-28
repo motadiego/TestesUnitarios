@@ -22,6 +22,8 @@ import org.junit.rules.ExpectedException;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.UsuarioBuilder;
+import br.ce.wcaquino.daos.LocacaoDAO;
+import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -47,6 +49,9 @@ public class LocacaoServiceTest {
 	public void setUp(){
 		// cenario
 		locacaoService = new LocacaoService();
+		LocacaoDAO dao = new LocacaoDAOFake();
+		locacaoService.setLocacaoDAO(dao);
+				
 		contador = contador + 1;
 		System.out.println(contador);
 	
