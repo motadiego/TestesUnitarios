@@ -31,11 +31,11 @@ import br.ce.wcaquino.exception.FilmeSemEstoqueException;
 import br.ce.wcaquino.exception.LocadoraException;
 import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
-import buildermaster.BuilderMaster;
 
 public class LocacaoServiceTest {
 	
-	private LocacaoService locacaoService = new LocacaoService();
+	private LocacaoService locacaoService;
+	private SPCService spcService;
 	
 	private static int contador = 0;
 	
@@ -49,9 +49,15 @@ public class LocacaoServiceTest {
 	public void setUp(){
 		// cenario
 		locacaoService = new LocacaoService();
+		
+		// mocar o dao
 		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		locacaoService.setLocacaoDAO(dao);
-				
+		
+		// mocar o spcService
+		spcService = Mockito.mock(SPCService.class);
+		locacaoService.setSPCService(spcService);
+		
 		contador = contador + 1;
 		System.out.println(contador);
 	
@@ -166,9 +172,28 @@ public class LocacaoServiceTest {
 
 	}
 	
+	/*
+	 * // Usado para gerar uma classe de builder passada como parâmetro (Ex:
+	 * LocacaoBuilder) public static void main(String[] args) { new
+	 * BuilderMaster().gerarCodigoClasse(Locacao.class); }
+	 */
 	
-	public static void main(String[] args) {
-		new BuilderMaster().gerarCodigoClasse(Locacao.class);
+	@Test
+	public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException, LocadoraException{
+		
+		// cenario
+		Usuario usuario = UsuarioBuilder.umUsuario().agora();
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().agora());
+		
+		// quando o metodo do service for chamado , retornar TRUE
+		Mockito.when(spcService.possuiNegativacao(usuario)).thenReturn(true);
+		
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Usuário Negativado");
+		
+		//acao
+		locacaoService.alugarFilme(usuario, filmes);
 	}
+	
 	
 }
