@@ -3,7 +3,6 @@ package br.ce.wcaquino.servicos;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -193,7 +192,7 @@ public class LocacaoServiceTest {
 		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().agora());
 		
 		// quando o metodo do service for chamado , retornar TRUE
-		Mockito.when(spcService.possuiNegativacao(usuario)).thenReturn(true);
+		Mockito.when(spcService.possuiNegativacao(Mockito.any(Usuario.class))).thenReturn(true);
 		
 		//acao
 		try {
@@ -212,11 +211,15 @@ public class LocacaoServiceTest {
 	public void deveEnviarEmailParaLocacoesAtrasadas() {
 		// cenario
 		Usuario usuario = UsuarioBuilder.umUsuario().agora();
+		Usuario usuario2 = UsuarioBuilder.umUsuario().comNome("Usuario em dia").agora();
+		Usuario usuario3 = UsuarioBuilder.umUsuario().comNome("Outro atrasado").agora();
+		
 		List<Locacao> locacoes = Arrays.asList(
-				LocacaoBuilder
-				 .umLocacao()
-				 .comUsuario(usuario)
-				 .comDataRetorno(DataUtils.obterDataComDiferencaDias(-2)).agora());
+			LocacaoBuilder .umLocacao().atrasada().comUsuario(usuario).agora(),
+			LocacaoBuilder.umLocacao().comUsuario(usuario2).agora(),
+			LocacaoBuilder.umLocacao().atrasada().comUsuario(usuario3).agora(),
+			LocacaoBuilder.umLocacao().atrasada().comUsuario(usuario3).agora()
+		);
 		
 		Mockito.when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 		
@@ -224,7 +227,16 @@ public class LocacaoServiceTest {
 		locacaoService.notificacaoAtrasos();
 	
 		// vericicacao
+		
+		// verifica se sera executado 3x (locacao atrasada) para qualquer usuario
+		Mockito.verify(emailService , Mockito.times(3)).notificarAtraso(Mockito.any(Usuario.class));
+		
 		Mockito.verify(emailService).notificarAtraso(usuario);
+		// verifica se enviou pelo menos 1 vez o email
+		Mockito.verify(emailService, Mockito.atLeastOnce()).notificarAtraso(usuario3);
+		// verifica se a noficicação nao ocorreu
+		Mockito.verify(emailService, Mockito.never()).notificarAtraso(usuario2);
+		Mockito.verifyNoMoreInteractions(emailService);
 	}
 	
 }
