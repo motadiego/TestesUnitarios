@@ -19,7 +19,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.LocacaoBuilder;
@@ -35,9 +38,16 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 	
+	@InjectMocks
 	private LocacaoService locacaoService;
+	
+	@Mock
 	private SPCService spcService;
+	
+	@Mock
 	private LocacaoDAO dao;
+	
+	@Mock
 	private EmailService emailService;
 	
 	private static int contador = 0;
@@ -50,21 +60,7 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setUp(){
-		// cenario
-		locacaoService = new LocacaoService();
-		
-		// mocar o dao
-		dao = Mockito.mock(LocacaoDAO.class);
-		locacaoService.setLocacaoDAO(dao);
-		
-		// mocar o spcService
-		spcService = Mockito.mock(SPCService.class);
-		locacaoService.setSPCService(spcService);
-		
-		// mocar o emailService
-		emailService = Mockito.mock(EmailService.class);
-		locacaoService.setEmailService(emailService);
-		
+		MockitoAnnotations.initMocks(this);
 		contador = contador + 1;
 		System.out.println(contador);
 	}
@@ -90,6 +86,11 @@ public class LocacaoServiceTest {
 		System.out.println("After Class");
 	}
 	
+	/*
+	 * // Usado para gerar uma classe de builder passada como parâmetro (Ex:
+	 * LocacaoBuilder) public static void main(String[] args) { new
+	 * BuilderMaster().gerarCodigoClasse(Locacao.class); }
+	 */
 	
 	
 	
@@ -178,11 +179,6 @@ public class LocacaoServiceTest {
 
 	}
 	
-	/*
-	 * // Usado para gerar uma classe de builder passada como parâmetro (Ex:
-	 * LocacaoBuilder) public static void main(String[] args) { new
-	 * BuilderMaster().gerarCodigoClasse(Locacao.class); }
-	 */
 	
 	@Test
 	public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException{
