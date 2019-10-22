@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,9 +35,11 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exception.FilmeSemEstoqueException;
 import br.ce.wcaquino.exception.LocadoraException;
 import br.ce.wcaquino.matchers.MatchersProprios;
+import br.ce.wcaquino.runners.ParallelRunner;
 import br.ce.wcaquino.utils.DataUtils;
 
 
+@RunWith(ParallelRunner.class)
 public class LocacaoServiceTest {
 	
 	@InjectMocks @Spy
@@ -62,31 +65,26 @@ public class LocacaoServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		
-		contador = contador + 1;
-		System.out.println(contador);
+		System.out.println("iniciando 2 ...");
 	}
 	
-	@Before
-	public void before() {
-		System.out.println("Antes de cada teste");
-	}
+	/*
+	 * @Before public void before() { System.out.println("Antes de cada teste"); }
+	 */
 	
 	@After
 	public void tearDown() {
-		System.out.println("Depos de cada teste");
+		System.out.println("finalizando 2 ...");
 	}
 	
 	
-	@BeforeClass
-	public static void setUpClass(){
-		System.out.println("Before Class");
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("After Class");
-	}
+	/*
+	 * @BeforeClass public static void setUpClass(){
+	 * System.out.println("Before Class"); }
+	 * 
+	 * @AfterClass public static void tearDownClass() {
+	 * System.out.println("After Class"); }
+	 */
 	
 	/*
 	 * // Usado para gerar uma classe de builder passada como parâmetro (Ex:

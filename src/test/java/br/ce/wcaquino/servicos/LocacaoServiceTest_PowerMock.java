@@ -67,27 +67,18 @@ public class LocacaoServiceTest_PowerMock {
 		System.out.println(contador);
 	}
 	
-	@Before
-	public void before() {
-		System.out.println("Antes de cada teste");
-	}
-	
-	@After
-	public void tearDown() {
-		System.out.println("Depos de cada teste");
-	}
-	
-	
-	@BeforeClass
-	public static void setUpClass(){
-		System.out.println("Before Class");
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("After Class");
-	}
-	
+	/*
+	 * @Before public void before() { System.out.println("Antes de cada teste"); }
+	 * 
+	 * @After public void tearDown() { System.out.println("Depos de cada teste"); }
+	 * 
+	 * 
+	 * @BeforeClass public static void setUpClass(){
+	 * System.out.println("Before Class"); }
+	 * 
+	 * @AfterClass public static void tearDownClass() {
+	 * System.out.println("After Class"); }
+	 */
 	/*
 	 * // Usado para gerar uma classe de builder passada como parâmetro (Ex:
 	 * LocacaoBuilder) public static void main(String[] args) { new
