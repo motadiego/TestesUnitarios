@@ -18,12 +18,12 @@ public class CalculadoraTest {
 	@Before
 	public void setUp(){
 		calc = new Calculadora();
-		System.out.println("iniciando ...");
+		System.out.println("iniciando ....");
 	}
 	
 	@After
 	public void tearDown() {
-		System.out.println("finalizando ...");
+		System.out.println("finalizando ....");
 	}
 	
 	
